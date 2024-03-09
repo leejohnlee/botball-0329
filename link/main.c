@@ -1,40 +1,72 @@
 #include <kipr/wombat.h>
- void front(int ms) {
-       motor(0,100);
-       motor(1,100);
-       msleep(ms);
-   }
-int main()
-{
-     wait_for_light(0);
-    motor(0,100);
-    msleep(170);
-    ao();
+
+void move_forward(int ms);
+void move_backwards(int ms);
+void turn_right(int ms);
+void turn_left(int ms);
+
+int main() {
+    //starting
+    wait_for_light(0);
+    turn_left(170);
+
+    //start 1st straight
+    move_forward(5000);
+   
+    //turn right
+    turn_right(1860);
+
+    //drive on bump
+    move_forward(1900);
     
-    front(5000);
-    ao();
+    //turn left off of bump
+    turn_left(1800);
     
-    motor(1,100);
-    msleep(1860);
-    ao();
+    //towards 2nd to last rock
+    move_forward(2600);
     
-    front(1900);
-    ao();
+    //turn left towards the rock heap
+    turn_left(1500);
     
-    motor(0,100);
-    msleep(1800);
-    ao();
-    
-    front(2600);
-    ao();
-    
-    motor(0,100);
-    msleep(1500);
-    ao();
-    
-    front(3500);
-    ao();
-    motor(0,-100);
-    motor(1,-115);
-    msleep(4500);
+    //drive into the rock heap
+    move_forward(3500);
+
+    //move out of icreate's path
+    move_backwards(4500);
+
 }
+
+//~~~~ FUNCTIONS ~~~~//
+
+//move forward
+void move_forward(int ms) {
+    motor(0, 100);
+    motor(1, 100);
+    msleep(ms);
+    ao();
+}
+
+//go backwards
+void move_backwards(int ms) {
+    motor(0,-100);
+    motor(1,-100);
+    msleep(ms);
+    ao();
+}
+
+
+//turn right
+void turn_right(int ms) {
+    motor(1, 100);
+    msleep(ms);
+    ao();
+
+}
+
+//turn left  
+void turn_left(int ms) {
+    motor(0, 100);
+    msleep(ms);
+
+}
+
