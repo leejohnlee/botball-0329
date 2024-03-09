@@ -5,7 +5,7 @@ int right_servo_port = 2;
 int claw_port = 1;
 
 //Servo rotation configurations
-int claw_open_degrees = 1024;
+int claw_open_degrees = 630;
 int claw_closed_degrees = 1600;
 int arm_up_degrees = 1024;
 int arm_down_degrees = 200;
@@ -18,37 +18,17 @@ void forward(int inches, float speed);
 //Less jerky motion for arm
 //Needed syntax: 
 //void slow_servo(int left_port, int_right_port, int servo_degrees, int_speed);
-void slow_servo(int servo_degrees, float speed){
-	int current_degrees=get_servo_position(left_servo_port);
-    while(current_degrees>servo_degrees){
-    	current_degrees-=speed;
-        set_servo_position(right_servo_port,current_degrees);
-        set_servo_position(left_servo_port,current_degrees);
-        msleep(speed);
-    }
-    while(current_degrees<servo_degrees){
-    	current_degrees+=speed;
-        set_servo_position(left_servo_port,current_degrees);
-        set_servo_position(right_servo_port,current_degrees);
-        msleep(speed);
-    }
-}
+void slow_servo(int servo_degrees, float speed);
 //Arm and claw functions
 void arm_up();
-void arm_down() {
-    slow_servo(arm_down_degrees, 1);
-}
-void arm_grab() {
-    slow_servo(arm_grab_position_degrees, 1);
-}
-void claw_open() {
-    set_servo_position(claw_port, claw_open_degrees);
-}
-void claw_close() {
-    set_servo_position(claw_port, claw_closed_degrees);
-}
+void arm_down();
+void arm_grab();
+void claw_open();
+void claw_close();
+
 //LESS THAN 67 FOR IR SENSOR APPROACH CENTER TOWER
 int main() {
+    claw_open();
     //Initialize
     create3_connect();
     enable_servos();
@@ -104,6 +84,39 @@ void forward(int inches, float speed) {
     create3_drive_straight((inches - 1) / 39.37, speed);
     create3_wait();
 };
+
 void arm_up() {
     slow_servo(arm_up_degrees, 1);
+}
+
+void slow_servo(int servo_degrees, float speed){
+	int current_degrees=get_servo_position(left_servo_port);
+    while(current_degrees>servo_degrees){
+    	current_degrees-=speed;
+        set_servo_position(right_servo_port,current_degrees);
+        set_servo_position(left_servo_port,current_degrees);
+        msleep(speed);
+    }
+    while(current_degrees<servo_degrees){
+    	current_degrees+=speed;
+        set_servo_position(left_servo_port,current_degrees);
+        set_servo_position(right_servo_port,current_degrees);
+        msleep(speed);
+    }
+}
+
+void arm_down() {
+    slow_servo(arm_down_degrees, 1);
+}
+
+void arm_grab() {
+    slow_servo(arm_grab_position_degrees, 1);
+}
+
+void claw_open() {
+    set_servo_position(claw_port, claw_open_degrees);
+}
+
+void claw_close() {
+    set_servo_position(claw_port, claw_closed_degrees);
 }
