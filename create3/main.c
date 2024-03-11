@@ -9,8 +9,8 @@ int claw_open_degrees = 630;
 int claw_closed_degrees = 1600;
 int arm_up_degrees = 1024;
 int arm_down_degrees = 200;
-int arm_grab_position_degrees = 376;
-
+int arm_grab_position_degrees = 400;
+int arm_start_degrees=300;
 //Important functions
 //Convert meters to inches for Create3
 void forward(int inches, float speed);
@@ -25,14 +25,15 @@ void arm_down();
 void arm_grab();
 void claw_open();
 void claw_close();
-
+void claw_start();
+void arm_start();
 //LESS THAN 67 FOR IR SENSOR APPROACH CENTER TOWER
 int main() {
-    claw_open();
     //Initialize
     create3_connect();
     enable_servos();
-    /*
+    arm_start();
+    //*
     claw_open();
     msleep(250);
     //*/
@@ -56,7 +57,7 @@ int main() {
     claw_open();
     //Maybe use the IR sensors to get accurate measurment?
     //forward(14.75, 0.75);
-    forward(11,0.75);
+    forward(16,0.75);
     create3_wait();
     //Grab Cubes
     claw_close();
@@ -72,11 +73,15 @@ int main() {
     create3_rotate_degrees(70, 50);
     create3_wait();
     //Lower arm, drop cubes
-    arm_down();
-    
+    slow_servo(0,1);
     claw_open();
-    //\\...//
+    msleep(500);
+    arm_start();
+    claw_start();
     //*/
+    create3_rotate_degrees(90,50);
+    create3_wait();
+    for
     return 0;
 }
 //inverse is 2048-value
@@ -119,4 +124,11 @@ void claw_open() {
 
 void claw_close() {
     set_servo_position(claw_port, claw_closed_degrees);
+ 
+}
+void claw_start(){
+	set_servo_position(claw_port, 0);
+}
+void arm_start(){
+	slow_servo(arm_start_degrees,1);
 }
