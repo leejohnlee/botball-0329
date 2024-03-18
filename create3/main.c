@@ -34,16 +34,14 @@ void arm_start();
 //NOTE: Speed is in servo ticks per second
 //Higher target positions will make the arm travel clockwise
 //Lower target positions make the arm travel counterclockwise
-//void set_arm_position(int target_pos, float speed);
+void set_arm_position(int target_pos, float speed);
 
 int main() {
     //Initialize
     create3_connect();
     enable_servos();
-    arm_start();
-    claw_open();
     msleep(250);
-    wait_for_light(0);
+    //wait_for_light(0);
 
     //slow down to avoid bump offset
     forward(37, 3);
@@ -90,9 +88,9 @@ int main() {
     arm_grab();
     forward(1, 1);
 
-    //Grab cubes
+    //Grab second row cubes
     slow_servo(arm_grab_position_degrees + 90, 1);
-    forward(5.50, 1);
+    forward(5.0, 1);
     claw_close();
     msleep(750);
     arm_up();
@@ -100,9 +98,13 @@ int main() {
     //Back up and drop cubes in designated area
     forward(-12, 1);
     arm_down();
-    msleep(250);
+    msleep(500);
     claw_open();
-
+	msleep(250);
+    
+    //next round init
+    arm_start();
+    set_servo_position(claw_port, 0);
     return 0;
 }
 
@@ -143,11 +145,11 @@ void arm_grab() {
 void arm_start() {
     slow_servo(arm_start_degrees, 1);
 }
-/*
+
 void set_arm_position(int target_pos, float speed) {
     slow_servo(target_pos, speed);
 }
-*/
+
 void claw_open() {
     set_servo_position(claw_port, claw_open_degrees);
 }
