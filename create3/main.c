@@ -40,6 +40,7 @@ int main() {
     //Initialize
     create3_connect();
     enable_servos();
+    
     msleep(250);
     //wait_for_light(0);
 
@@ -55,9 +56,16 @@ int main() {
     //Go to tower
     arm_grab();
     claw_open();
-    forward(19, 0.75);
+    forward(10, 0.75);
     create3_wait();
-
+    
+    //Align to center tower wall
+    while(analog(1)<2200){
+    	create3_velocity_set_components(0.075,0);
+        create3_wait();
+    }
+    create3_velocity_set_components(0,0);
+    create3_wait();
     //Grab Cubes
     claw_close();
     msleep(750);
@@ -90,14 +98,22 @@ int main() {
 
     //Grab second row cubes
     slow_servo(arm_grab_position_degrees + 90, 1);
-    forward(5.0, 1);
+    forward(3.0, 1);
+    
+    //Align to center tower wall
+    while(analog(1)<2375){
+    	create3_velocity_set_components(0.075,0);
+        create3_wait();
+    }
+    create3_velocity_set_components(0,0);
+    create3_wait();
     claw_close();
     msleep(750);
     arm_up();
 
     //Back up and drop cubes in designated area
     forward(-12, 1);
-    arm_down();
+    set_arm_position(0,1);
     msleep(500);
     claw_open();
 	msleep(250);
