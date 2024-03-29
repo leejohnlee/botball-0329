@@ -44,7 +44,8 @@ int main() {
     msleep(250);
     //wait_for_light(0);
 
-    //slow down to avoid bump offset
+    //Slow down to avoid bump offset and close claw to avoid purple tube
+    claw_close();
     forward(37, 3);
     forward(3, 0.5);
     msleep(0.3);
@@ -53,7 +54,8 @@ int main() {
     create3_rotate_degrees(92, 50);
     create3_wait();
 
-    //Go to tower
+    //Return to default position and go to tower
+    arm_start();
     arm_grab();
     claw_open();
     forward(10, 0.75);
@@ -117,7 +119,36 @@ int main() {
     msleep(500);
     claw_open();
 	msleep(250);
+    arm_start();
     
+    //Turn and head toward habitat construction
+    forward(-2, 1);
+    create3_rotate_degrees(42, 50);
+    forward(41, 1);
+    create3_rotate_degrees(10,1);
+    create3_wait();
+    
+    //Grab habitat tube(red pool noodle)
+    claw_close();
+    msleep(500);
+    //Move forward because the arm uses angular movement, and the tube needs linear movement(Prevent create from flipping)
+    create3_velocity_set_components(0.1,0);
+    create3_wait();
+    arm_up();
+    
+    //Turn and approach habitat pipes(white PVC along center)
+    msleep(250);
+    create3_rotate_degrees(-100,50);
+    create3_wait();
+    forward(12,1);
+    create3_rotate_degrees(10,1);
+    create3_wait();
+    arm_grab();
+    
+    //Use rangefinder to scan for presise position of habitat pipe(white pvc)
+    
+    //Lower tube onto pvc
+    slow_servo(10, 1);
     //next round init
     arm_start();
     set_servo_position(claw_port, 0);
