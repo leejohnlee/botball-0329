@@ -1,3 +1,4 @@
+
 #include <kipr/wombat.h>
 //Prototypes
 void move_forward(int ms);
@@ -16,28 +17,28 @@ int main() {
     turn_left(170);
 
     //start 1st straight
-    move_forward(4500);
+    move_forward(4600);
    
     //turn right
-    turn_right(1560);
+    turn_right(1650);
 
     //drive on bump
-    move_forward(1700);
+    move_forward(1550);
     
     //turn left off of bump
-    turn_left(1800);
+    turn_left(1550);
     
     //towards 2nd to last rock
-    move_forward(2500);
+    move_forward(2450);
     
     //turn left towards the rock heap
-    turn_left(1600);
+    turn_left(1700);
     
     //drive into the rock heap
     move_forward(3500);
 
     //move out of icreate's path
-    move_backwards(3800);
+    move_backwards(3500);
 
 }
 
