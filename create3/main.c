@@ -5,6 +5,9 @@ int left_servo_port = 3;
 int right_servo_port = 2;
 int claw_port = 1;
 
+//Sensor ports
+int rangefinder_port=5;
+
 //Claw values
 int claw_open_degrees = 630;
 int claw_closed_degrees = 1600;
@@ -30,6 +33,10 @@ void claw_open();
 void claw_close();
 void claw_start();
 void arm_start();
+void claw_grab_habitat();
+
+//Code chunks
+void get_multipliers();
 
 //NOTE: Speed is in servo ticks per second
 //Higher target positions will make the arm travel clockwise
@@ -40,98 +47,30 @@ int main() {
     //Initialize
     create3_connect();
     enable_servos();
-    
-    msleep(250);
-    //wait_for_light(0);
-
-    //Slow down to avoid bump offset and close claw to avoid purple tube
+    msleep(12000);
     claw_close();
-    forward(37, 3);
-    forward(3, 0.5);
-    msleep(0.3);
-
-    //turn and approach tower
-    create3_rotate_degrees(92, 50);
-    create3_wait();
-
-    //Return to default position and go to tower
     arm_start();
-    arm_grab();
-    claw_open();
-    forward(10, 0.75);
-    create3_wait();
+    get_multipliers();
     
-    //Align to center tower wall
-    while(analog(1)<2200){
+    //To the habitat construction
+    forward(36,1);
+    //Precision alignment to habitat construction dock
+    create3_rotate_degrees(-20,0.5);
+    while(analog(rangefinder_port)<1500){
+    	create3_velocity_set_components(0,0.075);
+        create3_wait();
+    }
+    create3_velocity_set_components(0,0);
+    while(analog(rangefinder_port)<2890){
     	create3_velocity_set_components(0.075,0);
         create3_wait();
     }
     create3_velocity_set_components(0,0);
-    create3_wait();
-    //Grab Cubes
-    claw_close();
-    msleep(750);
-    arm_up();
-
-    //go to rock heap
-    msleep(250);
-    create3_rotate_degrees(-90, 50);
-    create3_wait();
-    forward(35, 1);
-    msleep(250);
-
-    //Turn and drop cubes
-    create3_rotate_degrees(60, 50);
-    create3_wait();
-    slow_servo(0, 1);
-    claw_open();
-    msleep(500);
-    arm_grab();
-    claw_start();
-
-    //Turn and approach tower to grab second row cubes
-    create3_rotate_degrees(110, 50);
-    create3_wait();
-    forward(17, 1);
-    create3_rotate_degrees(-35, 50);
-    create3_wait();
-    arm_grab();
-    forward(1, 1);
-
-    //Grab second row cubes
-    slow_servo(arm_grab_position_degrees + 90, 1);
-    forward(3.0, 1);
-    
-    //Align to center tower wall
-    while(analog(1)<2375){
-    	create3_velocity_set_components(0.075,0);
-        create3_wait();
-    }
-    create3_velocity_set_components(0,0);
-    create3_wait();
-    claw_close();
-    msleep(750);
-    arm_up();
-
-    //Back up and drop cubes in designated area
-    forward(-12, 1);
-    set_arm_position(0,1);
-    msleep(500);
-    claw_open();
-	msleep(250);
-    arm_start();
-    
-    //Turn and head toward habitat construction
-    forward(-2, 1);
-    create3_rotate_degrees(42, 50);
-    forward(41, 1);
-    create3_rotate_degrees(10,1);
-    create3_wait();
-    
     //Grab habitat tube(red pool noodle)
     claw_close();
     msleep(500);
-    //Move forward because the arm uses angular movement, and the tube needs linear movement(Prevent create from flipping)
+    
+    //*Move forward because the arm uses angular movement, and the tube needs linear movement(Prevent create from flipping)
     create3_velocity_set_components(0.1,0);
     create3_wait();
     arm_up();
@@ -140,12 +79,13 @@ int main() {
     msleep(250);
     create3_rotate_degrees(-100,50);
     create3_wait();
-    forward(12,1);
-    create3_rotate_degrees(10,1);
+    forward(14,1);
+    create3_rotate_degrees(17,1);
     create3_wait();
     arm_grab();
     
     //Use rangefinder to scan for presise position of habitat pipe(white pvc)
+    
     
     //Lower tube onto pvc
     slow_servo(10, 1);
@@ -208,4 +148,93 @@ void claw_close() {
 //Set claw to starting position
 void claw_start() {
     set_servo_position(claw_port, 0);
+}
+void claw_grab_habitat() {
+    set_servo_position(claw_port, 1400);
+}
+//Code chunks, separate code for testing
+void get_multipliers(){
+	msleep(250);
+    //wait_for_light(0);
+
+    //Slow down to avoid bump offset and close claw to avoid purple tube
+    claw_close();
+    forward(37, 3);
+    forward(3, 0.5);
+    msleep(0.3);
+
+    //turn and approach tower
+    create3_rotate_degrees(92, 50);
+    create3_wait();
+
+    //Return to default position and go to tower
+    arm_start();
+    arm_grab();
+    claw_open();
+    forward(10, 0.75);
+    create3_wait();
+    
+    //Align to center tower wall
+    while(analog(rangefinder_port)<2200){
+    	create3_velocity_set_components(0.075,0);
+        create3_wait();
+    }
+    create3_velocity_set_components(0,0);
+    create3_wait();
+    //Grab Cubes
+    claw_close();
+    msleep(750);
+    arm_up();
+
+    //go to rock heap
+    msleep(250);
+    create3_rotate_degrees(-90, 50);
+    create3_wait();
+    forward(35, 1);
+    msleep(250);
+
+    //Turn and drop cubes
+    create3_rotate_degrees(60, 50);
+    create3_wait();
+    slow_servo(0, 1);
+    claw_open();
+    msleep(500);
+    arm_grab();
+    claw_start();
+
+    //Turn and approach tower to grab second row cubes
+    create3_rotate_degrees(110, 50);
+    create3_wait();
+    forward(17, 1);
+    create3_rotate_degrees(-35, 50);
+    create3_wait();
+    arm_grab();
+    forward(1, 1);
+
+    //Grab second row cubes
+    slow_servo(arm_grab_position_degrees + 90, 1);
+    forward(3.0, 1);
+    
+    //Align to center tower wall
+    while(analog(rangefinder_port)<2375){
+    	create3_velocity_set_components(0.075,0);
+        create3_wait();
+    }
+    create3_velocity_set_components(0,0);
+    create3_wait();
+    claw_close();
+    msleep(750);
+    arm_up();
+
+    //Back up and drop cubes in designated area
+    forward(-12, 1);
+    set_arm_position(0,1);
+    msleep(500);
+    claw_open();
+	msleep(250);
+    arm_start();
+    
+    //Turn and head toward habitat construction
+    forward(-2, 1);
+    create3_rotate_degrees(44, 50);
 }
