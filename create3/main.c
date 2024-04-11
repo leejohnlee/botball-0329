@@ -47,16 +47,23 @@ int main() {
     //Initialize
     create3_connect();
     enable_servos();
+    wait_for_light(0);
     msleep(12000);
+    shut_down_in(119);
+    
+    
     claw_close();
     arm_start();
+    
+    //This is a section of the total code
     get_multipliers();
     
     //To the habitat construction
     forward(36,1);
+    
     //Precision alignment to habitat construction dock
     create3_rotate_degrees(-20,0.5);
-    while(analog(rangefinder_port)<1500){
+    while(analog(rangefinder_port)<2000){
     	create3_velocity_set_components(0,0.075);
         create3_wait();
     }
@@ -75,23 +82,15 @@ int main() {
     create3_wait();
     arm_up();
     
-    //Turn and approach habitat pipes(white PVC along center)
+    //Back up and drop tube
+    forward(-10,1);
+    arm_down();
+    claw_open();
     msleep(250);
-    create3_rotate_degrees(-100,50);
-    create3_wait();
-    forward(14,1);
-    create3_rotate_degrees(17,1);
-    create3_wait();
-    arm_grab();
     
-    //Use rangefinder to scan for presise position of habitat pipe(white pvc)
-    
-    
-    //Lower tube onto pvc
-    slow_servo(10, 1);
     //next round init
-    arm_start();
-    set_servo_position(claw_port, 0);
+    //arm_start();
+    //set_servo_position(claw_port, 0);
     return 0;
 }
 
@@ -154,8 +153,7 @@ void claw_grab_habitat() {
 }
 //Code chunks, separate code for testing
 void get_multipliers(){
-	msleep(250);
-    //wait_for_light(0);
+    msleep(250);
 
     //Slow down to avoid bump offset and close claw to avoid purple tube
     claw_close();
@@ -181,11 +179,16 @@ void get_multipliers(){
     }
     create3_velocity_set_components(0,0);
     create3_wait();
+    
     //Grab Cubes
     claw_close();
     msleep(750);
     arm_up();
-
+    
+    //Back up to push poms into Area 4
+    forward(-2,1);
+    create3_wait();
+    
     //go to rock heap
     msleep(250);
     create3_rotate_degrees(-90, 50);
@@ -206,7 +209,7 @@ void get_multipliers(){
     create3_rotate_degrees(110, 50);
     create3_wait();
     forward(17, 1);
-    create3_rotate_degrees(-35, 50);
+    create3_rotate_degrees(-45, 50);
     create3_wait();
     arm_grab();
     forward(1, 1);
