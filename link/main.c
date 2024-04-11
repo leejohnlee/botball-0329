@@ -5,6 +5,10 @@ void move_forward(int ms);
 void move_backwards(int ms);
 void turn_right(int ms);
 void turn_left(int ms);
+void mav_move_forward(int ms);
+void mav_move_backwards(int ms);
+void mav_turn_right(int ms);
+void mav_turn_left(int ms);
 
 int main() {
     //starting
