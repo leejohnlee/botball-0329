@@ -1,6 +1,6 @@
 
 #include <kipr/wombat.h>
-//Prototypes
+
 void move_forward(int ms);
 void move_backwards(int ms);
 void turn_right(int ms);
@@ -10,23 +10,23 @@ void mav_move_backwards(int ms);
 void mav_turn_right(int ms);
 void mav_turn_left(int ms);
 
-//Main
 int main() {
     //starting
     //wait_for_light(0);
+    shut_down_in(119);
     turn_left(170);
 
     //start 1st straight
     move_forward(4600);
    
     //turn right
-    turn_right(1650);
+    turn_right(1700);
 
     //drive on bump
-    move_forward(1550);
+    move_forward(1700);
     
     //turn left off of bump
-    turn_left(1550);
+    turn_left(1500);
     
     //towards 2nd to last rock
     move_forward(2450);
@@ -35,10 +35,20 @@ int main() {
     turn_left(1700);
     
     //drive into the rock heap
-    move_forward(3500);
+    move_forward(3300);
+    
+    //curve the rocks into rock heap more securly
+    turn_right(500);
+    
+    //turn back to original position
+    turn_left(500);
 
     //move out of icreate's path
-    move_backwards(3500);
+    move_backwards(3800);
+    
+    motor(0,-100);
+    msleep(1400);
+    ao();
 
 }
 
