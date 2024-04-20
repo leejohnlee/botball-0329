@@ -1,4 +1,5 @@
 
+
 #include <kipr/wombat.h>
 
 void move_forward(int ms);
@@ -12,7 +13,7 @@ void mav_turn_left(int ms);
 
 int main() {
     //starting
-    //wait_for_light(0);
+    wait_for_light(0);
     shut_down_in(119);
     turn_left(170);
 
@@ -26,13 +27,13 @@ int main() {
     move_forward(1700);
     
     //turn left off of bump
-    turn_left(1500);
+    turn_left(1700);
     
     //towards 2nd to last rock
     move_forward(2450);
     
     //turn left towards the rock heap
-    turn_left(1700);
+    turn_left(1500);
     
     //drive into the rock heap
     move_forward(3300);
@@ -44,10 +45,10 @@ int main() {
     turn_left(500);
 
     //move out of icreate's path
-    move_backwards(3800);
+    move_backwards(4300);
     
     motor(0,-100);
-    msleep(1400);
+    msleep(1250);
     ao();
 
 }
