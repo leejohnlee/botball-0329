@@ -47,6 +47,9 @@ int main() {
     //Initialize
     create3_connect();
     enable_servos();
+    arm_start();
+    claw_start();
+    msleep(250);
     wait_for_light(0);
     msleep(12000);
     shut_down_in(119);
@@ -83,14 +86,18 @@ int main() {
     arm_up();
     
     //Back up and drop tube
-    forward(-10,1);
-    arm_down();
-    claw_open();
+    forward(-5,1);
+    create3_rotate_degrees(70,50);
+    create3_wait();
+    forward(5,1);
     msleep(250);
+    set_arm_position(0,1);
+    claw_open();
+    msleep(500);
     
     //next round init
-    //arm_start();
-    //set_servo_position(claw_port, 0);
+    arm_start();
+    set_servo_position(claw_port, 0);
     return 0;
 }
 
@@ -197,7 +204,8 @@ void get_multipliers(){
     msleep(250);
 
     //Turn and drop cubes
-    create3_rotate_degrees(60, 50);
+    //60
+    create3_rotate_degrees(80, 50);
     create3_wait();
     slow_servo(0, 1);
     claw_open();
@@ -206,7 +214,8 @@ void get_multipliers(){
     claw_start();
 
     //Turn and approach tower to grab second row cubes
-    create3_rotate_degrees(110, 50);
+    //110
+    create3_rotate_degrees(90, 50);
     create3_wait();
     forward(17, 1);
     create3_rotate_degrees(-45, 50);
@@ -239,5 +248,5 @@ void get_multipliers(){
     
     //Turn and head toward habitat construction
     forward(-2, 1);
-    create3_rotate_degrees(44, 50);
+    create3_rotate_degrees(42, 50);
 }
