@@ -51,6 +51,7 @@ int main() {
     claw_start();
     msleep(250);
     wait_for_light(0);
+    claw_close();
     msleep(12000);
     shut_down_in(119);
     
@@ -84,6 +85,13 @@ int main() {
     create3_velocity_set_components(0.1,0);
     create3_wait();
     arm_up();
+    
+    //turn to push poms
+    create3_rotate_degrees(90,10);
+    create3_wait();
+    create3_rotate_degrees(-90,10);
+    create3_wait();
+    msleep(250);
     
     //Back up and drop tube
     forward(-5,1);
