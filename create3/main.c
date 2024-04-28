@@ -87,9 +87,9 @@ int main() {
     arm_up();
     
     //turn to push poms
-    create3_rotate_degrees(90,10);
+    create3_rotate_degrees(150,100);
     create3_wait();
-    create3_rotate_degrees(-90,10);
+    create3_rotate_degrees(-150,100);
     create3_wait();
     msleep(250);
     
@@ -215,7 +215,7 @@ void get_multipliers(){
     //60
     create3_rotate_degrees(80, 50);
     create3_wait();
-    slow_servo(0, 1);
+    slow_servo(25, 1);
     claw_open();
     msleep(500);
     arm_grab();
