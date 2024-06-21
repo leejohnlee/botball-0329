@@ -13,7 +13,7 @@ int claw_open_degrees = 630;
 int claw_closed_degrees = 1600;
 
 //Arm values
-int arm_up_degrees = 700;
+int arm_up_degrees = 900;
 int arm_down_degrees = 200;
 int arm_grab_position_degrees = 425;
 int arm_start_degrees = 300;
@@ -25,6 +25,9 @@ void forward(int inches, float speed);
 //NOTE: Speed is in servo ticks per second
 void slow_servo(int servo_degrees, float speed);
 
+//purple tubes function
+void purple_tubes();
+
 //Arm and claw functions
 void arm_up();
 void arm_down();
@@ -34,6 +37,9 @@ void claw_close();
 void claw_start();
 void arm_start();
 void claw_grab_habitat();
+
+//Tighter grip for purple tubers
+void claw_close_tight();
 
 //Code chunks
 void get_multipliers();
@@ -47,12 +53,13 @@ int main() {
     //Initialize
     create3_connect();
     enable_servos();
+    printf("running\n");
     arm_start();
     claw_start();
     msleep(250);
-    wait_for_light(0);
+    //wait_for_light(0);
     claw_close();
-    msleep(12000);
+   // msleep(12000);
     shut_down_in(119);
     
     
@@ -61,51 +68,14 @@ int main() {
     
     //This is a section of the total code
     get_multipliers();
-    
-    //To the habitat construction
-    forward(36,1);
-    
-    //Precision alignment to habitat construction dock
-    create3_rotate_degrees(-20,0.5);
-    while(analog(rangefinder_port)<2000){
-    	create3_velocity_set_components(0,0.075);
-        create3_wait();
-    }
-    create3_velocity_set_components(0,0);
-    while(analog(rangefinder_port)<2890){
-    	create3_velocity_set_components(0.075,0);
-        create3_wait();
-    }
-    create3_velocity_set_components(0,0);
-    //Grab habitat tube(red pool noodle)
-    claw_close();
-    msleep(500);
-    
-    //*Move forward because the arm uses angular movement, and the tube needs linear movement(Prevent create from flipping)
-    create3_velocity_set_components(0.1,0);
-    create3_wait();
-    arm_up();
-    
-    //turn to push poms
-    create3_rotate_degrees(150,100);
-    create3_wait();
-    create3_rotate_degrees(-150,100);
-    create3_wait();
-    msleep(250);
-    
-    //Back up and drop tube
-    forward(-5,1);
-    create3_rotate_degrees(70,50);
-    create3_wait();
-    forward(5,1);
-    msleep(250);
-    set_arm_position(0,1);
-    claw_open();
-    msleep(500);
+   
+    //section of code that will get purple tubes
+    purple_tubes();
+   
     
     //next round init
-    arm_start();
-    set_servo_position(claw_port, 0);
+    //arm_start();
+    //set_servo_position(claw_port, 0);
     return 0;
 }
 
@@ -171,7 +141,6 @@ void get_multipliers(){
     msleep(250);
 
     //Slow down to avoid bump offset and close claw to avoid purple tube
-    claw_close();
     forward(37, 3);
     forward(3, 0.5);
     msleep(0.3);
@@ -181,8 +150,9 @@ void get_multipliers(){
     create3_wait();
 
     //Return to default position and go to tower
-    arm_start();
-    arm_grab();
+    //arm_start();
+    //arm_grab();
+    set_arm_position(arm_grab_position_degrees+50,1);
     claw_open();
     forward(10, 0.75);
     create3_wait();
@@ -254,7 +224,65 @@ void get_multipliers(){
 	msleep(250);
     arm_start();
     
-    //Turn and head toward habitat construction
+
+}
+void claw_close_tight(){
+	set_servo_position(claw_port, claw_closed_degrees+100);
+}
+void purple_tubes(){
+        create3_rotate_degrees(95,50);
+       	create3_wait();
+    
+        //Align purple tube
+        set_arm_position(275,1);
+        if(analog(rangefinder_port)>900){
+            while(analog(rangefinder_port)>900){
+                create3_velocity_set_components(0,0.008175);
+                create3_wait();
+            }
+        }
+        else{
+            set_arm_position(235,1);
+            while(analog(rangefinder_port)<800){
+                create3_velocity_set_components(0.00875,0);
+                create3_wait();
+            }
+        }
+    	create3_velocity_set_components(0,0);
+    	create3_wait();
+    	create3_rotate_degrees(0.25,1);
+    	create3_wait();
+        forward(14.1,1);
+        while(analog(rangefinder_port)<1200){
+            set_arm_position(get_servo_position(left_servo_port)+10,1);
+            if(get_servo_position(left_servo_port)>=1024){
+            	break;
+            }
+        }
+    	set_arm_position(get_servo_position(right_servo_port)+90,1);
+    	//arm_start();
+    	msleep(250);
+    	claw_close_tight();
+    	//set_arm_position(get_servo_position(left_servo_port)-10);
+}
+void second_half(){
+     //Turn and head toward habitat construction
     forward(-2, 1);
     create3_rotate_degrees(42, 50);
-}
+    
+ 	//To the habitat construction
+    forward(36,1);
+    
+    //Precision alignment to habitat construction dock
+    create3_rotate_degrees(-20,0.5);
+    while(analog(rangefinder_port)<2000){
+    	create3_velocity_set_components(0,0.075);
+        create3_wait();
+    }
+    create3_velocity_set_components(0,0);
+    while(analog(rangefinder_port)<2890){
+    	create3_velocity_set_components(0.075,0);
+        create3_wait();
+   	}
+    
+}    
