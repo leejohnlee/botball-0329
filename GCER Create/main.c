@@ -59,7 +59,7 @@ int pom_claw_closed_position = 780; //Position to close the pom claw
 
 int arm_up_degrees = 700; // Degrees to raise the arm
 int arm_down_degrees = 80; // Degrees to lower the arm
-int arm_grab_position_degrees = 475; // Degrees for the arm to grab cubes Original value 450
+int arm_grab_position_degrees = 475; // Degrees for the arm to grab cubes Original value 475
 int arm_start_degrees = 550; // Degrees to set the arm at starting position
 int arm_sort_poms_position = 190; //Original value 150
 
@@ -177,16 +177,19 @@ void align_to_line() {
     // Align the robot to a line using cliff sensors
     while (1) {
         if (create3_sensor_cliff(0) <= 2195) {
-            create3_velocity_set_components(0.025, 0.3);
+            //create3_velocity_set_components(0.025, 0.3);
+            create3_velocity_set_components(0.0125, 0.15);
         }
         if (create3_sensor_cliff(3) <= 2195) {
-            create3_velocity_set_components(0.025, -0.3);
+            //create3_velocity_set_components(0.025, -0.3);
+            create3_velocity_set_components(0.0125, -0.15);
         }
         if ((create3_sensor_cliff(0) <= 2195) && (create3_sensor_cliff(3) <= 2195)) {
             break;
         }
         if ((create3_sensor_cliff(0) >= 2195) && (create3_sensor_cliff(3) >= 2195)) {
-            create3_velocity_set_components(0.1, 0);
+            //create3_velocity_set_components(0.1, 0);
+            create3_velocity_set_components(0.05, 0);
         }
     }
     create3_wait();
@@ -301,7 +304,7 @@ void initialize() {
     pom_claw_open();
     msleep(250);
     //rotate(0.5);
-    // wait_for_light(0);
+    wait_for_light(0);
     //claw_open();
     //msleep(12000);
     shut_down_in(119);
@@ -321,7 +324,7 @@ void pom_pyramid_area_with_sort(){
     arm_up();
     forward(5, 30);
     rotate(60);
-    forward(3,1);
+    forward(2.5,1);
     slow_servo(arm_sort_poms_position-30, 1);
     msleep(500);
     pom_claw_close();
@@ -338,7 +341,7 @@ void pom_pyramid_area_with_sort(){
     arm_down();
     pom_claw_open();
     arm_up();
-    rotate(-111);
+    rotate(-111); //-111
     //rotate(70);
     forward(4,1);
     slow_servo(arm_sort_poms_position-30, 1);
@@ -476,7 +479,7 @@ void pom_pyramid_multipliers_with_switch(){
     arm_up();
     rotate(-150);
 	//End
-    forward(-2,1);
+    /*forward(-2,1);
     slow_servo(arm_down_degrees+20,1);
     claw_start();
     velocity = 0.015;
@@ -492,7 +495,7 @@ void pom_pyramid_multipliers_with_switch(){
     light_color(255,100,0,1);
     //rotate(-1);
     msleep(500);
-    slow_servo(arm_down_degrees+100,1);
+    slow_servo(arm_down_degrees+100,1);*/
     //forward(0.5,1);
     rotate(-90);
     arm_up();
