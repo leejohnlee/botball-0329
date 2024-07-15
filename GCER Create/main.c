@@ -59,7 +59,7 @@ int pom_claw_closed_position = 780; //Position to close the pom claw
 
 int arm_up_degrees = 700; // Degrees to raise the arm
 int arm_down_degrees = 80; // Degrees to lower the arm
-int arm_grab_position_degrees = 475; // Degrees for the arm to grab cubes Original value 475
+int arm_grab_position_degrees = 475; // Degrees for the arm to grab cubes Original value 450
 int arm_start_degrees = 550; // Degrees to set the arm at starting position
 int arm_sort_poms_position = 190; //Original value 150
 
@@ -177,19 +177,16 @@ void align_to_line() {
     // Align the robot to a line using cliff sensors
     while (1) {
         if (create3_sensor_cliff(0) <= 2195) {
-            //create3_velocity_set_components(0.025, 0.3);
-            create3_velocity_set_components(0.0125, 0.15);
+            create3_velocity_set_components(0.025, 0.3);
         }
         if (create3_sensor_cliff(3) <= 2195) {
-            //create3_velocity_set_components(0.025, -0.3);
-            create3_velocity_set_components(0.0125, -0.15);
+            create3_velocity_set_components(0.025, -0.3);
         }
         if ((create3_sensor_cliff(0) <= 2195) && (create3_sensor_cliff(3) <= 2195)) {
             break;
         }
         if ((create3_sensor_cliff(0) >= 2195) && (create3_sensor_cliff(3) >= 2195)) {
-            //create3_velocity_set_components(0.1, 0);
-            create3_velocity_set_components(0.05, 0);
+            create3_velocity_set_components(0.1, 0);
         }
     }
     create3_wait();
@@ -324,7 +321,7 @@ void pom_pyramid_area_with_sort(){
     arm_up();
     forward(5, 30);
     rotate(60);
-    forward(2.5,1);
+    forward(3,1);
     slow_servo(arm_sort_poms_position-30, 1);
     msleep(500);
     pom_claw_close();
@@ -341,7 +338,7 @@ void pom_pyramid_area_with_sort(){
     arm_down();
     pom_claw_open();
     arm_up();
-    rotate(-111); //-111
+    rotate(-111);
     //rotate(70);
     forward(4,1);
     slow_servo(arm_sort_poms_position-30, 1);
@@ -361,7 +358,7 @@ void pom_pyramid_area_with_sort(){
     forward(-2,1);
     arm_up();
     rotate(-68);
-    align_to_line();
+    forward(13,1);
     /*
     rotate(-30);
     slow_servo(arm_down_degrees+50,1);
@@ -430,8 +427,8 @@ void pom_pyramid_multipliers_with_switch(){
     // Turn and approach tower
     create3_rotate_degrees(90, 50);
     create3_wait();
-	slow_servo(arm_grab_position_degrees+37, 1);
-    claw_open();
+	slow_servo(arm_grab_position_degrees+87, 1);
+    claw_start();
     forward(12,0.75);
     rotate(45);
     //forward(3,1);
@@ -442,6 +439,7 @@ void pom_pyramid_multipliers_with_switch(){
     arm_grab();
     //forward(-1,1);
     rotate(-45);
+    claw_open();
     float velocity = 0.015;
     while (velocity != 0) {
         if (create3_sensor_ir(2) >= 900){
@@ -554,7 +552,7 @@ void pom_pyramid_multipliers() {
     // Turn and approach tower
     create3_rotate_degrees(91, 50);
     create3_wait();
-	slow_servo(arm_grab_position_degrees+37, 1);
+	slow_servo(arm_grab_position_degrees+37+30, 1); //[V4] 37
     claw_open();
     forward(10,0.75);
     float velocity = 0.015;
@@ -606,12 +604,12 @@ void pom_pyramid_multipliers() {
     msleep(100);
 }
 void orange_pom_area(){
-    slow_servo(arm_grab_position_degrees + 135, 1); // Second row cubes grab position, original value 125
+    slow_servo(arm_grab_position_degrees + 125, 1); // Second row cubes grab position, original value 135
     forward(4, 1);
     velocity = 0.025;
     while (velocity != 0) { // Fancy sensor setup
         // Better alignment to center tower walls, using "vertical" rangefinder
-        if (analog(5) > 2585) { // Best 2080, V2 2680
+        if (analog(5) > 2680) { // Best 2080, V2 2680, V3 2585, V4 
             velocity = 0;
         }
         create3_velocity_set_components(velocity, 0);
@@ -623,6 +621,9 @@ void orange_pom_area(){
     claw_grab_habitat();
     msleep(500);
     arm_up();
+    //Changeable values
+    //msleep(5000);
+    //***
     forward(-12,10);
     arm_down();
     msleep(500);
