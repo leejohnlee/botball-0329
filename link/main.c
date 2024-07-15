@@ -30,7 +30,7 @@ int main() {
     msleep(500);
     set_servo_position(left_motor_port,left_arm_up);
     msleep(500);
-    set_servo_position(switch_arm,2047);
+    set_servo_position(switch_arm,1600);
     msleep(500);
     //exit(1);
     wait_for_light(0);
@@ -76,27 +76,37 @@ int main() {
     //turn_left(500);
     ao();
     //july 5 thing that dongho did
-      motor(0,-100);
+    //go back a little bit
+    motor(0,-100);
     motor(1,-100);
     msleep(2300);
     ao();
+    //turn towards the black line
     motor(1,-50);
     msleep(1400);
     ao();
+    //straighten onto the line
     by();
+    ao();
+    //wait a second
+    msleep(1000);
+    //put arms down
     set_servo_position(1,right_arm_down);
     set_servo_position(0,left_arm_down);
     ao();
+    //ram into border
     motor(1,50);
     msleep(200);
     motor(0,-50);
     msleep(200);
     motor(0,70);
     motor(1,70);
-    msleep(2500);
+    msleep(2000);
+    //backup a bit
     motor(0,-50);
     motor(1,-50);
     msleep(500);
+    //push yellow cube into rock heap
     set_servo_position(0,left_arm_up);
     motor(0,25);
     motor(1,-75);
@@ -106,46 +116,53 @@ int main() {
     motor(1,-75);
     msleep(800);
     ao();
-    msleep(35000);
+    //wait at rock heap
+    //msleep(35000);
     //go back from rock heap so that the link is in the middle white area
     motor(1,-100);
     motor(0,-100);
     msleep(400);
-    
+    //?Turn at black line to straighten out towards the middle of the table
     motor(1,-50);
     msleep(650);
-    
+    ao();
+    //wait for Create to go by
+    //msleep(45000);
+    //move back to middle of the table
     motor(1,-100);
     motor(0,-100);
     msleep(1350);
     set_servo_position(0,left_arm_up);
     set_servo_position(1,right_arm_up);
     //turns 180 degrees
-    
     motor(1,-50);
     motor(0,50);
-    msleep(2610);
+    msleep(3000);
     //starts going back until the link senses black tape
 	hi();
     motor(0,50);
     motor(1,50);
+    ao();
+    //wait for Create to go by
+    msleep(45000);
     //goes foward so that the front sensor won't be sensing black
     motor(0,50);
     motor(1,50);
-    msleep(6400);
+    msleep(6500);
     ao();
-    //start to go back until front sensor senses black
+    //start to go back until front-sensor senses black
     bye();
     motor(1,-50);
     motor(0,-50);
     ao();
     //link will crash to the switch
+    //set_servo_position(switch_arm, 1600);
    	motor(1,-50);
    	msleep(100);
    	motor(1,-70);
    	motor(0,-70);
   	msleep(3000);
-    set_servo_position(2, 2046);
+    set_servo_position(switch_arm, 2046);
     //flip the switch
     //drive_straight(0.5,1000);
     //set_servo_position(2,0);
