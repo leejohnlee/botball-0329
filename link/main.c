@@ -21,8 +21,9 @@ int right_arm_up=1150; //port # 1
 int right_arm_down=60; //port # 1
 int left_arm_up=780; //port # 0
 int left_arm_down=1911; //port # 0
-int switch_arm_up=2047;//new 
-int switch_arm_down=1600;
+int switch_arm_up=515; 
+int switch_arm_down=380;
+int switch_arm_start=1020;
 int main() {
     //starting
     enable_servos();
@@ -30,7 +31,7 @@ int main() {
     msleep(500);
     set_servo_position(left_motor_port,left_arm_up);
     msleep(500);
-    set_servo_position(switch_arm,1600);
+    set_servo_position(switch_arm,switch_arm_start);
     msleep(500);
     //exit(1);
     wait_for_light(0);
@@ -68,7 +69,7 @@ int main() {
     set_servo_position(1,right_arm_up);
     
     //drive into the rock heap
-    move_forward(1400);
+    move_forward(1200);
     
     //curve the rocks into rock heap more securly
     //turn_right(500);
@@ -114,7 +115,7 @@ int main() {
     set_servo_position(1,400);
     motor(0,25);
     motor(1,-75);
-    msleep(800);
+    msleep(950);
     ao();
     //wait at rock heap
     //msleep(35000);
@@ -122,10 +123,14 @@ int main() {
     motor(1,-100);
     motor(0,-100);
     msleep(400);
+    //set_servo_position(0,left_arm_down);
+  //  set_servo_position(1,right_arm_down);
     //?Turn at black line to straighten out towards the middle of the table
     motor(1,-50);
-    msleep(650);
+    msleep(530);
     ao();
+    //ao();
+    //msleep(45000);
     //wait for Create to go by
     //msleep(45000);
     //move back to middle of the table
@@ -144,7 +149,7 @@ int main() {
     motor(1,50);
     ao();
     //wait for Create to go by
-    msleep(45000);
+    msleep(35000);
     //goes foward so that the front sensor won't be sensing black
     motor(0,50);
     motor(1,50);
@@ -156,13 +161,13 @@ int main() {
     motor(0,-50);
     ao();
     //link will crash to the switch
-    //set_servo_position(switch_arm, 1600);
+    set_servo_position(switch_arm, switch_arm_down);
    	motor(1,-50);
    	msleep(100);
    	motor(1,-70);
    	motor(0,-70);
   	msleep(3000);
-    set_servo_position(switch_arm, 2046);
+    set_servo_position(switch_arm, switch_arm_up);
     //flip the switch
     //drive_straight(0.5,1000);
     //set_servo_position(2,0);
@@ -171,6 +176,9 @@ int main() {
     //msleep(500);
     //set_servo_position(2,0);
     ao();
+    motor(0,50);
+    motor(1,50);
+    msleep(120);
 }
 
 //~~~~ FUNCTIONS ~~~~//
