@@ -21,7 +21,6 @@ int right_arm_up=1150; //port # 1
 int right_arm_down=60; //port # 1
 int left_arm_up=780; //port # 0
 int left_arm_down=1911; //port # 0
-int switch_arm_up=515; 
 int switch_arm_down=380;
 int switch_arm_start=1020;
 int main() {
@@ -115,7 +114,7 @@ int main() {
     set_servo_position(1,400);
     motor(0,25);
     motor(1,-75);
-    msleep(950);
+    msleep(920);
     ao();
     //wait at rock heap
     //msleep(35000);
@@ -167,7 +166,7 @@ int main() {
    	motor(1,-70);
    	motor(0,-70);
   	msleep(3000);
-    set_servo_position(switch_arm, switch_arm_up);
+    set_servo_position(switch_arm, switch_arm_start);
     //flip the switch
     //drive_straight(0.5,1000);
     //set_servo_position(2,0);
@@ -176,9 +175,10 @@ int main() {
     //msleep(500);
     //set_servo_position(2,0);
     ao();
-    motor(0,50);
-    motor(1,50);
-    msleep(120);
+    //drive a tiny bit forward
+    //motor(0,50);
+    //motor(1,50);
+    //msleep(120);
 }
 
 //~~~~ FUNCTIONS ~~~~//
