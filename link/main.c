@@ -166,16 +166,18 @@ int main() {
    	motor(1,-70);
    	motor(0,-70);
   	msleep(3000);
+    motor(0,50);
+    motor(1,-50);
+    msleep(150);
     set_servo_position(switch_arm, switch_arm_start);
     //flip the switch
     //drive_straight(0.5,1000);
-    //set_servo_position(2,0);
-    //msleep(200);
+  // set_servo_position(2,0);
+   // msleep(200);
     //set_servo_position(2,1500);
     //msleep(500);
     //set_servo_position(2,0);
     ao();
-    //drive a tiny bit forward
     //motor(0,50);
     //motor(1,50);
     //msleep(120);
